@@ -21,10 +21,11 @@ uWSGI is serving Django application
 ####NOTE:
 1. Update `Vagrantfile` to change your synced_folders.
 ```
-config.vm.synced_folder "./project", "/home/vagrant/egerin/code/"
+config.vm.synced_folder "./mysite", "/var/www/mysite"
 ```
 2. Update `inventory.ini` to replace your server IP or host name instead of `web`
-3. Update `shared_vars.main`, `/roles/setup/vars/main.yml`, `/roles/deploy/vars/main.yml` and `/roles/setup/templates` to make your desired changes i.e http port, django settings module, project dir etc
+3. Update `shared_vars.main`, `/roles/setup/vars/main.yml`, `/roles/deploy/vars/main.yml` and `/roles/setup/templates`
+ to make your desired changes i.e http port, django settings module, project dir, Nginx and uWSGI logs etc
 
 
 ####Using Vagrant
