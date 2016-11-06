@@ -1,0 +1,41 @@
+---
+- name: Enable passwordless postgres as sudo
+  lineinfile: dest=/etc/sudoers regexp=^vagrant line="vagrant ALL=(postgres) NOPASSWD:/bin/sh"
+
+
+- name: Allow Postgres to listen on all ports
+  lineinfile: dest=/etc/postgresql/9.4/main/postgresql.conf
+              regexp="^listen_addresses"
+              line="listen_addresses = '*'" state=present
+
+
+
+- name: Allow host access to Postgres
+  copy:
+    dest: /etc/postgresql/9.4/main/pg_hba.conf
+    content: |
+      local   all   postgres   peer
+      local   all   all        peer
+      host    all   all        0.0.0.0/0   md5
+
+  notify: restart postgresql
+
+
+
+- meta: flush_handlers
+
+
+
+- name: Ensure Database is created
+  become_user: postgres
+  postgresql_db: name={{db_name}}
+  vars:
+      ansible_ssh_pipelining: True
+
+
+
+- name: Ensure user has access to Database
+  become_user: postgres
+  postgresql_user: db={{db_name}} name={{db_user}} password={{db_password}} priv=ALL
+  vars:
+      ansible_ssh_pipelining: True

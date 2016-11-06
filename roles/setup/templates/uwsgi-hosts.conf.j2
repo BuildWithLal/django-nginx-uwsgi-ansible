@@ -1,0 +1,33 @@
+[uwsgi]
+
+chdir = {{ project_dir }}
+
+# virtualenv path
+home = {{ virtualenv_dir }}
+
+
+module = {{ project_name }}.wsgi:application
+
+# django settings module
+env = DJANGO_SETTINGS_MODULE={{ django_settings_module }}
+
+# master
+master = true
+
+
+# maximum number of worker processes
+processes = 10
+
+# the socket (use the full path to be safe)
+socket = /tmp/mysite.sock
+
+
+# appropriate permissions
+chmod-socket = 664
+
+uid = www-data
+gid = www-data
+
+
+# clear environment on exit
+vacuum = true

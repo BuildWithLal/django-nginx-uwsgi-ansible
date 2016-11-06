@@ -1,0 +1,17 @@
+---
+- name: Create uWSGI hosts dir
+  file: path=/etc/uwsgi/sites state=directory
+
+
+- name: Copy uWSGI virtual host
+  template: src=uwsgi-hosts.conf.j2
+            dest=/etc/uwsgi/sites/{{ project_name }}.ini
+  notify: restart uwsgi
+
+
+- name: Copy uWSGI service file
+  template: src=uwsgi-service.conf.j2 dest=/etc/init/uwsgi.conf
+  notify: restart uwsgi
+
+
+- meta: flush_handlers

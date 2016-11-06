@@ -1,0 +1,35 @@
+---
+- name: Add keyserver to apt for Postgres
+  command: apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+
+
+- name: Add custom Postgres repo to apt to Latest version
+  lineinfile: dest=/etc/apt/sources.list.d/pgdg.list
+              line="deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" state=present create=yes
+  notify: update apt cache
+
+
+- meta: flush_handlers
+
+
+- name: Installing apt packages i.e python, postgres, nginx, git etc
+  apt: name={{item}}
+  with_items:
+      - python-pip
+      - python-dev
+      - libpq-dev
+      - python-software-properties
+      - software-properties-common
+      - python-psycopg2
+      - postgresql-9.4
+      - postgresql-contrib
+      - git
+      - nginx
+
+
+
+- name: install python virtualenv and uWSGI using PIP
+  pip: name={{item}}
+  with_items:
+        - virtualenv
+        - uwsgi

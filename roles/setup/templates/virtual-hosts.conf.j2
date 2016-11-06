@@ -1,0 +1,21 @@
+server {
+
+	listen {{ server_port }};
+
+	error_log {{ project_dir }}/log/error.log;
+	access_log {{ project_dir }}/log/access.log;
+
+	location /static {
+        root {{ project_dir }};
+    }
+
+    location /media {
+        root {{ project_dir }};
+    }
+
+	location / {
+        include         uwsgi_params;
+        uwsgi_pass      unix:/tmp/mysite.sock;
+    }
+
+}

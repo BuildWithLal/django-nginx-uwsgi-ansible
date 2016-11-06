@@ -1,0 +1,33 @@
+---
+- name: Copy virtual hosts
+  template: src=virtual-hosts.conf.j2
+            dest=/etc/nginx/sites-available/{{ project_name }}.conf
+  notify: restart nginx
+
+
+- name: Remove default virtual host
+  file:
+    path=/etc/nginx/sites-enabled/default.conf
+    state=absent
+  notify: restart nginx
+
+
+
+- name: Enable new virtual host for {{ project_name }}
+  file:
+    src=/etc/nginx/sites-available/{{ project_name }}.conf
+    dest=/etc/nginx/sites-enabled/{{ project_name }}.conf
+    state=link
+  notify: restart nginx
+
+
+- meta: flush_handlers
+
+
+
+- name: Create Log directory for Nginx and uWSGI
+  file: path={{ project_dir }}/log state=directory
+
+
+- name: Test Nginx Configrations
+  command: service nginx configtest

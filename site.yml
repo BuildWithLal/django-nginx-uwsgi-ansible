@@ -1,0 +1,23 @@
+---
+- hosts: all
+
+  become: yes
+  become_method: sudo
+  gather_facts: no
+
+
+  vars_files:
+    - shared_vars.yml
+
+
+  roles:
+    - setup
+    - deploy
+
+
+  post_tasks:
+      - name: Restart Nginx and uWSGi Last time
+        service: name={{ item }} state=restarted
+        with_items:
+            - nginx
+            - uwsgi

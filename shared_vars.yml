@@ -1,0 +1,11 @@
+---
+
+project_name: mysite
+
+document_root: /var/www
+project_dir: "{{ document_root }}/{{ project_name }}"
+
+virtualenv_dir: "{{ document_root }}/venvs/{{ project_name }}"
+requirements_file: "{{project_dir}}/requirements.txt"
+
+django_settings_module: "{{ project_name }}.settings"
