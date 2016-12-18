@@ -1,7 +1,7 @@
 ### Deploy Django and Postgres on Nginx and uWSGI
 We are using Vagrant and Ansible to deploy Django application on Vagrant box but you can reuse same ansible playbook to deploy on any other Ubuntu server 14.04. We are using Python virtualenv to deploy Django application.
 
-Nginx is frontend server acting as a reverse proxy handling `/static/` and `/media/` contents.
+Nginx is acting as a reverse proxy, handling `/static/` and `/media/` contents.
 
 uWSGI is serving Django application
 
